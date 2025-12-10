@@ -1,16 +1,7 @@
-import { useEffect } from "react";
+import BookList from "./components/BookList";
 
 function App() {
-  const getBooks = async () => {
-    const res = await fetch("http://localhost:4000");
-    const data = await res.text();
-    console.log("data : ", data);
-  };
-
-  useEffect(() => {
-    getBooks();
-  }, []);
-  return <>Hi there</>;
+  return <BookList query="достоевский" />;
 }
 
 export default App;
