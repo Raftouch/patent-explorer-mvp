@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Book, BookData } from "../types/book";
+import { apiUrl } from "../utils/api";
 
 interface BookListProps {
   query: string;
@@ -11,7 +12,7 @@ export default function BookList({ query }: BookListProps) {
 
   const getBooks = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/api/books?q=${query}`);
+      const res = await fetch(`${apiUrl}?q=${query}`);
       const data: BookData = await res.json();
       console.log("data : ", data);
 
