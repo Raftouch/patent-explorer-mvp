@@ -28,7 +28,7 @@ export default function BookList({ query }: BookListProps) {
 
   useEffect(() => {
     getBooks();
-  }, []);
+  }, [query]);
 
   return (
     <div>
