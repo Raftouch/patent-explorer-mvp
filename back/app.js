@@ -8,7 +8,7 @@ const cors = require("cors");
 app.use(cors({ origin: "http://localhost:5173" }));
 
 app.get("/", (req, res) => {
-  res.send("Hello ");
+  res.json({ message: "Hello" });
 });
 
 app.get("/api/books", async (req, res) => {
