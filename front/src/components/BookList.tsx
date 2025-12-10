@@ -40,7 +40,7 @@ export default function BookList({ query }: BookListProps) {
           {books.map((book, index) => (
             <li key={index}>
               <h3>{book.title}</h3>
-              <p>{book.author}</p>
+              <p>{book.author?.join(", ")}</p>
               <p>{book.year}</p>
             </li>
           ))}
