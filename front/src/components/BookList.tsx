@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import type { Book, BookData } from "../types/book";
 import { apiUrl } from "../utils/api";
 import BookCard from "./BookCard";
+import { BookFinderContext } from "../context/BookContext";
 
 interface BookListProps {
   query: string;
@@ -11,7 +12,13 @@ export default function BookList({ query }: BookListProps) {
   const [bookData, setBookData] = useState<BookData>();
   const [books, setBooks] = useState<Book[]>([]);
 
+  const { loading, error, setLoading, setError } =
+    useContext(BookFinderContext);
+
   const getBooks = async () => {
+    setLoading(true);
+    setError(null);
+
     try {
       const res = await fetch(`${apiUrl}?q=${query}`);
 
@@ -20,19 +27,25 @@ export default function BookList({ query }: BookListProps) {
       const data: BookData = await res.json();
 
       setBookData(data);
-      setBooks(books);
+      setBooks(data.books);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setBooks([]);
+      setError("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     getBooks();
-  }, [query]);
+  }, [query, setLoading, setError]);
 
   return (
     <div>
+      {loading && <p>Loading... Please wait</p>}
+      {error && <p>{error}</p>}
+
       <h1>Book List</h1>
       <p>Total Results: {bookData?.total}</p>
       {books.length > 0 ? (
