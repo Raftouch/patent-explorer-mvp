@@ -14,12 +14,11 @@ export default function BookList({ query }: BookListProps) {
   const getBooks = async () => {
     try {
       const res = await fetch(`${apiUrl}?q=${query}`);
+
+      if (!res.ok) throw new Error("Failed to fetch books");
+
       const data: BookData = await res.json();
-      console.log("data : ", data);
 
-      if (!data) throw new Error("No books available");
-
-      const books: Book[] = data.books;
       setBookData(data);
       setBooks(books);
     } catch (error) {
@@ -36,13 +35,15 @@ export default function BookList({ query }: BookListProps) {
     <div>
       <h1>Book List</h1>
       <p>Total Results: {bookData?.total}</p>
-      {books ? (
+      {books.length > 0 ? (
         <ul>
           {books.map((book, index) => (
             <BookCard key={index} book={book} />
           ))}
         </ul>
-      ) : null}
+      ) : (
+        <p>No results found</p>
+      )}
     </div>
   );
 }
