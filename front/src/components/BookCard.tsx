@@ -5,13 +5,22 @@ interface BookCardProps {
 }
 
 export default function BookCard({ book }: BookCardProps) {
+  const coverUrl = book.coverId
+    ? `https://covers.openlibrary.org/b/id/${book.coverId}-M.jpg`
+    : null;
+
   return (
     <li className="bg-white border rounded-lg shadow-sm hover:shadow-md transition-shadow p-4 flex flex-col">
       <div className="flex justify-center mb-4">
-        {book.cover ? (
+        {coverUrl ? (
           <img
-            src={book.cover}
+            src={coverUrl}
             alt={book.title}
+            loading="lazy"
+            decoding="async"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
             className="w-[114px] h-[180px] object-cover rounded"
           />
         ) : (
