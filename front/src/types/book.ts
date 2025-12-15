@@ -7,5 +7,6 @@ export type Book = {
   title: string;
   author: string[];
   year: number;
-  cover: string | null;
+  // cover: string | null;
+  coverId: number | null;
 };
