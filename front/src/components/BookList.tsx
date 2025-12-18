@@ -6,9 +6,17 @@ import { BookFinderContext } from "../context/BookContext";
 
 interface BookListProps {
   query: string;
+  page: number;
+  limit: number;
+  onPageChange: (page: number) => void;
 }
 
-export default function BookList({ query }: BookListProps) {
+export default function BookList({
+  query,
+  page,
+  limit,
+  onPageChange,
+}: BookListProps) {
   const [bookData, setBookData] = useState<BookData>();
   const [books, setBooks] = useState<Book[]>([]);
 
@@ -21,7 +29,9 @@ export default function BookList({ query }: BookListProps) {
       setError(null);
 
       try {
-        const res = await fetch(`${apiUrl}?q=${query}&page=1&limit=20`);
+        const res = await fetch(
+          `${apiUrl}?q=${query}&page=${page}&limit=${limit}`
+        );
 
         if (!res.ok) throw new Error("Failed to fetch books");
 
@@ -39,7 +49,7 @@ export default function BookList({ query }: BookListProps) {
     };
 
     getBooks();
-  }, [query]);
+  }, [query, page, limit]);
 
   return (
     <section className="max-w-7xl mx-auto">
@@ -59,6 +69,25 @@ export default function BookList({ query }: BookListProps) {
           ))}
         </ul>
       )}
+
+      <div className="flex items-center justify-between mt-8">
+        <button
+          disabled={page === 1}
+          onClick={() => onPageChange(page - 1)}
+          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+        >
+          Previous
+        </button>
+
+        <span className="font-medium">Page {page}</span>
+
+        <button
+          onClick={() => onPageChange(page + 1)}
+          className="px-4 py-2 bg-gray-200 rounded"
+        >
+          Next
+        </button>
+      </div>
 
       {!loading && books.length === 0 && (
         <p className="text-gray-500">No results found</p>
