@@ -34,7 +34,7 @@ export default function BookCard({ book }: BookCardProps) {
         {book.title}
       </h3>
 
-      <p className="text-sm text-gray-600 mb-1">
+      <p className="text-sm text-gray-600 mb-1 line-clamp-2">
         {book.author?.join(", ") || "Unknown author"}
       </p>
 
